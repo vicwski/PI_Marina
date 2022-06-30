@@ -3,40 +3,48 @@ const World = Matter.World
 const Bodies = Matter.Bodies
 const Constraint = Matter.Constraint
 
-var engine, world, ground
+var engine, world
 
-var towerImg, bkImg
+var backgroundImg, towerImage
+var tower, ground
+var cannon, cannonball
+var angle
 
 function preload() {
-  towerImg = loadImage('assets/tower.png')
-  bkImg = loadImage('assets/background.gif')
+  backgroundImg = loadImage('./assets/background.gif')
+  towerImage = loadImage('./assets/tower.png')
 }
+
 function setup() {
-  canvas = createCanvas(1200, 600)
+  createCanvas(1200, 600)
   engine = Engine.create()
   world = engine.world
 
-  options = {
+  var options = {
     isStatic: true
   }
 
   ground = Bodies.rectangle(0, height - 1, width * 2, 1, options)
   World.add(world, ground)
 
-  tower = Bodies.rectangle(120, height - 260, 200, 350, options)
+  tower = Bodies.rectangle(160, 350, 160, 310, options)
   World.add(world, tower)
+
+  cannon = new Cannon(180, 110, 130, 100, angle)
+  cannonball = new CannonBall(cannon.x, cannon.y)
 }
 
 function draw() {
-  background(187)
   Engine.update(engine)
-
-  image(bkImg, 0, 0, width, height)
+  image(backgroundImg, 0, 0, width, height)
 
   rect(ground.position.x, ground.position.y, width * 2, 1)
 
   push()
   imageMode(CENTER)
-  image(towerImg, tower.position.x, tower.position.y, 200, 350)
+  image(towerImage, tower.position.x, tower.position.y, 160, 310)
   pop()
+
+  cannon.display()
+  cannonball.display()
 }
