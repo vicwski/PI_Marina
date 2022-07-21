@@ -7,8 +7,8 @@ var engine, world
 
 var backgroundImg, towerImage
 var tower, ground
-var cannon, cannonball
-var angle
+var cannon, angle
+var balls = []
 
 function preload() {
   backgroundImg = loadImage('./assets/background.gif')
@@ -17,8 +17,12 @@ function preload() {
 
 function setup() {
   createCanvas(1200, 600)
+
   engine = Engine.create()
   world = engine.world
+
+  angleMode(DEGREES)
+  angle = 15
 
   var options = {
     isStatic: true
@@ -31,7 +35,6 @@ function setup() {
   World.add(world, tower)
 
   cannon = new Cannon(180, 110, 130, 100, angle)
-  cannonball = new CannonBall(cannon.x, cannon.y)
 }
 
 function draw() {
@@ -46,5 +49,29 @@ function draw() {
   pop()
 
   cannon.display()
-  cannonball.display()
+
+  for (var i = 0; i < balls.length; i++) {
+    showCannonBalls(balls[i])
+  }
+}
+
+function keyPressed() {
+  if (keyCode === DOWN_ARROW) {
+    var cannonBall = new CannonBall(cannon.x, cannon.y)
+    cannonBall.trajectory = []
+    Matter.Body.setAngle(cannonBall.body, cannon.angle)
+    balls.push(cannonBall)
+  }
+}
+
+function keyReleased() {
+  if (keyCode === DOWN_ARROW) {
+    balls[balls.length - 1].shoot()
+  }
+}
+
+function showCannonBalls(ball) {
+  if (ball) {
+    ball.display()
+  }
 }
