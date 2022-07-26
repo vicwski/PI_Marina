@@ -1,25 +1,27 @@
 class Boat {
   constructor(x, y, width, height, boatPos) {
-    var options = {
-      isStatic: true
-    }
-
-    this.body = Bodies.rectangle(x, y, width, height, options)
+    this.body = Bodies.rectangle(x, y, width, height)
     this.width = width
     this.height = height
+
+    this.image = loadImage('./assets/boat.png')
     this.boatPosition = boatPos
-    this.image = loadImage('assets/boat.png')
     World.add(world, this.body)
   }
 
+  remove() {
+    
+  }
+
   display() {
+    var angle = this.body.angle
     var pos = this.body.position
 
     push()
     translate(pos.x, pos.y)
-    rotate(this.angle)
+    rotate(angle)
     imageMode(CENTER)
-    image(this.image, 0, 0, this.width, this.height)
+    image(this.image, 0, this.boatPosition, this.width, this.height)
     pop()
   }
 }

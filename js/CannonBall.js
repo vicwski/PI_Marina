@@ -25,6 +25,15 @@ class CannonBall {
     })
   }
 
+  remove() {
+    Matter.Body.setVelocity(this.body, { x: 0, y: 0 })
+
+    setTimeout(() => {
+      Matter.World.remove(world, this.body)
+      delete balls[index]
+    }, 1000)
+  }
+
   display() {
     var pos = this.body.position
 
