@@ -10,7 +10,10 @@ class Boat {
   }
 
   remove() {
-    
+    setTimeout(() => {
+      Matter.World.remove(world, boats[index].body)
+      delete boats[index]
+    }, 2000)
   }
 
   display() {

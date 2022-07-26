@@ -48,6 +48,7 @@ function draw() {
 
   for (var i = 0; i < balls.length; i++) {
     showCannonBalls(balls[i], i)
+    collisionWithBoat(i)
   }
 
   cannon.display()
@@ -109,7 +110,7 @@ function collisionWithBoat(index) {
       var collision = Matter.SAT.collides(balls[index].body, boats[i].body)
 
       if (collision.collided) {
-        boats[i].remove()
+        boats[i].remove(i)
 
         Matter.World.remove(world, balls[index].body)
         delete balls[index]
