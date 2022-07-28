@@ -5,12 +5,18 @@ const Constraint = Matter.Constraint
 
 var engine, world, backgroundImg, boat
 var canvas, angle, tower, ground, cannon
+var boatSpriteSheet, boatSpriteData, boatBrokenSpriteSheet, boatBrokenSpriteData
+
+var boatAnimation = []
 var balls = []
 var boats = []
 
 function preload() {
   backgroundImg = loadImage('./assets/background.gif')
   towerImage = loadImage('./assets/tower.png')
+
+  boatSpriteSheet = loadImage('./assets/boat/boat.png')
+  boatSpriteData = loadJSON('./assets/boat/boat.json')
 }
 
 function setup() {
@@ -29,6 +35,13 @@ function setup() {
   World.add(world, tower)
 
   cannon = new Cannon(180, 110, 130, 100, angle)
+
+  var boatFrames = boatSpriteData.frames
+  for (var i = 0; i < boatFrames.length; i++) {
+    var pos = boatFrames[i].position
+    var img = boatSpriteSheet.get(pos.x, pos.y, pos.w, pos.h)
+    boatAnimation.push(img)
+  }
 }
 
 function draw() {
@@ -83,7 +96,14 @@ function showBoats() {
     ) {
       var positions = [-40, -60, -70, -20]
       var position = random(positions)
-      var boat = new Boat(width, height - 100, 170, 170, position)
+      var boat = new Boat(
+        width,
+        height - 100,
+        170,
+        170,
+        position,
+        boatAnimation
+      )
 
       boats.push(boat)
     }
@@ -96,10 +116,11 @@ function showBoats() {
         })
 
         boats[i].display()
+        boats[i].animate()
       }
     }
   } else {
-    var boat = new Boat(width, height - 60, 170, 170, -60)
+    var boat = new Boat(width, height - 60, 170, 170, -60, boatAnimation)
     boats.push(boat)
   }
 }
